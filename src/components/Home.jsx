@@ -1,5 +1,5 @@
 import React from 'react'
-import { Carousel, Col, Container, Row } from 'react-bootstrap'
+import { Alert, Carousel, Col, Container, Row } from 'react-bootstrap'
 import items from '../data/menu.json'
 import DishComments from './DishComments'
 import ReservationForm from './ReservationForm'
@@ -19,7 +19,7 @@ class Home extends React.Component {
     // the lifespan of our page/component
 
     state = {
-        selectedDish: items[0], // we always need to provide an initial state for our component
+        selectedDish: null //items[0], // we always need to provide an initial state for our component
     }
 
     // the state object in a react component is READ-ONLY
@@ -35,7 +35,7 @@ class Home extends React.Component {
                 {/* <div class="container" /> */}
                 <Row className="justify-content-center mt-3">
                     <Col xs={12} md={8}>
-                        <Reservations />
+                        <Reservations header='My Reservations' />
                     </Col>
                 </Row>
                 <Row className="justify-content-center mt-3">
@@ -44,8 +44,16 @@ class Home extends React.Component {
                                 COL CONTENT
                             </div>
                         */}
-                        <h1>Welcome to Strivestaurant</h1>
-                        <p>The best pasta dishes you can find on the web!</p>
+                        {
+                            this.props.newTitle ?
+                            <h1>{this.props.newTitle}</h1>
+                            : <h1>Welcome to Strivestuarant</h1>
+                        }
+                        {
+                            this.props.newPayoff
+                            ? <p>{this.props.newPayoff}</p>
+                            : <p>The best pasta dishes you can find on the web!</p>
+                        }
                         <Carousel>
                             {
                                 // every time you do a .map in react you'll need to
@@ -59,7 +67,7 @@ class Home extends React.Component {
                                     >
                                         {/* the key is necessary for React's VIRTUAL DOM */}
                                         <img
-                                            className="d-block w-100"
+                                            className="d-block w-100 img-fluid"
                                             src={item.image}
                                             alt="First slide"
                                         />
@@ -75,12 +83,21 @@ class Home extends React.Component {
                 </Row>
                 <Row className="justify-content-center mt-3">
                     <Col xs={12} md={8}>
-                        <DishComments dish={this.state.selectedDish} marginTop={0} />
+                        {
+                            this.state.selectedDish && this.state.selectedDish.name !== 'Amatriciana' &&
+                            <DishComments dish={this.state.selectedDish} marginTop={0} />
+                        }
                     </Col>
                 </Row>
                 <Row className="justify-content-center mt-3">
                     <Col xs={12} md={8}>
-                        <ReservationForm />
+                        {
+                            this.state.selectedDish && this.state.selectedDish.comments.some( comment => comment.rating < 5) ? 
+                            <Alert variant='danger'>
+                                This is danger a alert!
+                            </Alert>
+                            : <ReservationForm />
+                        }
                     </Col>
                 </Row>
             </Container>

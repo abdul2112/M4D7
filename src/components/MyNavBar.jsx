@@ -10,14 +10,18 @@ class MyNavBar extends React.Component {
 
     constructor(props) {
         super(props);
-        console.log(this.props);
+        console.log('hello');
       }
 
     render() {
 
         return (
             <Navbar bg="dark" variant="dark" expand="lg">
-        <Navbar.Brand href="#home">{this.props.title} - Strive For Food</Navbar.Brand>
+        <Navbar.Brand href="#home">{this.props.title} - {
+        this.props.title === 'Strivestaurant'
+                ? 'The perfect place for pasta lovers!'
+                : 'Strive For Food'}
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">
